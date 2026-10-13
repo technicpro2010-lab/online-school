@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { API_BASE } from '../api';
 
 function EnrollmentDashboard() {
   const [requests, setRequests] = useState([]);
@@ -8,7 +9,7 @@ function EnrollmentDashboard() {
 
   const fetchPendingRequests = () => {
     const token = localStorage.getItem('token');
-    axios.get('http://127.0.0.1:8000/api/admin/pending-enrollments', {
+    axios.get(`${API_BASE}/admin/pending-enrollments`, {
       headers: { Authorization: `Bearer ${token}` }
     })
     .then(res => {
@@ -31,7 +32,7 @@ function EnrollmentDashboard() {
     // Explicitly target the ID to avoid malformed URL routes
     const cleanId = String(enrollmentId).trim();
 
-    axios.put(`http://127.0.0.1:8000/api/admin/enrollments/${cleanId}`, 
+    axios.put(`${API_BASE}/admin/enrollments/${cleanId}`,
       { status }, 
       { 
         headers: { 

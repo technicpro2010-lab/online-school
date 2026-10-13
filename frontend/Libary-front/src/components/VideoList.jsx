@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { API_BASE, storageUrl } from '../api';
 
 function VideoList({ user }) {
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  const API_BASE = 'http://127.0.0.1:8000/api';
 
   useEffect(() => {
     const fetchVideos = async () => {
@@ -166,9 +165,7 @@ function VideoList({ user }) {
                     <video controls style={{ width: '100%', height: '100%', objectFit: 'cover' }}>
                       <source
                         src={
-                          rawUrl.startsWith('http')
-                            ? rawUrl
-                            : `http://127.0.0.1:8000/storage/${rawUrl}`
+                          storageUrl(rawUrl)
                         }
                         type="video/mp4"
                       />

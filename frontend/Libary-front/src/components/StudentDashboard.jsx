@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import JoinClassModal from './JoinClassModal';
+import { API_BASE, storageUrl } from '../api';
 
 const StudentDashboard = () => {
   const [materials, setMaterials] = useState({
@@ -21,7 +22,7 @@ const StudentDashboard = () => {
       const token = localStorage.getItem('token');
 
       try {
-        const response = await axios.get('http://127.0.0.1:8000/api/my-materials', {
+        const response = await axios.get(`${API_BASE}/my-materials`, {
           headers: {
             Authorization: `Bearer ${token}`,
             Accept: 'application/json',
@@ -198,7 +199,7 @@ const StudentDashboard = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {books.map((book, index) => {
               const fileUrl = book.file_path
-                ? (book.file_path.startsWith('http') ? book.file_path : `http://127.0.0.1:8000/storage/${book.file_path}`)
+                ? storageUrl(book.file_path)
                 : (book.url ? (book.url.startsWith('http') ? book.url : `https://${book.url}`) : null);
 
               return (
@@ -286,7 +287,7 @@ const StudentDashboard = () => {
                     ) : isLocalFile ? (
                       <video controls className="w-full h-full object-cover">
                         <source 
-                          src={videoSrc.startsWith('http') ? videoSrc : `http://127.0.0.1:8000/storage/${videoSrc}`} 
+                          src={storageUrl(videoSrc)}
                           type="video/mp4" 
                         />
                         Your browser does not support playing this video.

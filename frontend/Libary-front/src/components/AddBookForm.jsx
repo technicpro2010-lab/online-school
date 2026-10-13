@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { API_BASE } from '../api';
 
 const AddBookForm = ({ onBookAdded }) => {
   const [formData, setFormData] = useState({
@@ -17,7 +18,7 @@ const AddBookForm = ({ onBookAdded }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.post('http://127.0.0.1:8000/api/books', formData)
+    axios.post(`${API_BASE}/books`, formData)
       .then(response => {
         onBookAdded(response.data);
         setFormData({ title: '', author: '', isbn: '', description: '', category_id: '1', quantity: 1 });

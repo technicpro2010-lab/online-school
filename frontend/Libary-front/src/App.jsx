@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { API_BASE } from './api';
 import AuthForm from './components/AuthForm';
 import BookList from './components/BookList';
 import VideoList from './components/VideoList';
@@ -61,7 +62,7 @@ function App() {
   const handleLogout = () => {
     const token = localStorage.getItem('token');
     if (token) {
-      axios.post('http://127.0.0.1:8000/api/logout')
+      axios.post(`${API_BASE}/logout`)
         .catch(err => console.error('Logout error:', err));
     }
 

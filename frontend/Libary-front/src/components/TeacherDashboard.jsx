@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
+import { API_BASE, storageUrl } from '../api';
 
 function TeacherDashboard() {
   const [subjects, setSubjects] = useState([]);
@@ -29,8 +30,6 @@ function TeacherDashboard() {
   const [scheduledSessions, setScheduledSessions] = useState([]);
   const [loadingSessions, setLoadingSessions] = useState(true);
   const [deletingSessionId, setDeletingSessionId] = useState(null);
-
-  const API_BASE = 'http://127.0.0.1:8000/api';
 
   const fetchMyUploads = () => {
     const token = localStorage.getItem('token');
@@ -562,7 +561,7 @@ function TeacherDashboard() {
               <tbody>
                 {myUploads.map((item) => {
                   const fileUrl = item.file_path
-                    ? (item.file_path.startsWith('http') ? item.file_path : `http://127.0.0.1:8000/storage/${item.file_path}`)
+                    ? storageUrl(item.file_path)
                     : (item.url ? (item.url.startsWith('http') ? item.url : `https://${item.url}`) : null);
 
                   return (

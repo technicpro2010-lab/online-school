@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { API_BASE } from '../api';
 
 function SubjectsList({ user }) {
   const [subjects, setSubjects] = useState([]);
@@ -14,13 +15,13 @@ function SubjectsList({ user }) {
     const authHeaders = token ? { Headers: { Authorization: `Bearer ${token}` } } : {};
 
     // 1. Fetch Subjects from backend
-    axios.get('http://127.0.0.1:8000/api/subjects', authHeaders)
+    axios.get(`${API_BASE}/subjects`, authHeaders)
       .then((res) => {
         setSubjects(res.data || []);
         
         // 2. Fetch Enrollments separately if student is logged in
         if (isStudent && token) {
-          axios.get('http://127.0.0.1:8000/api/my-enrollments', authHeaders)
+          axios.get(`${API_BASE}/my-enrollments`, authHeaders)
             .then((enrRes) => {
               const map = {};
               if (Array.isArray(enrRes.data)) {
@@ -46,7 +47,7 @@ function SubjectsList({ user }) {
   const handleEnroll = (subjectId) => {
     const token = localStorage.getItem('token');
     axios.post(
-      `http://127.0.0.1:8000/api/subjects/${subjectId}/enroll`,
+      `${API_BASE}/subjects/${subjectId}/enroll`,
       {},
       { headers: { Authorization: `Bearer ${token}` } }
     )

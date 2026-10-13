@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { API_BASE } from '../api';
 
 const SubjectSelection = () => {
   const [subjects, setSubjects] = useState([]);
@@ -18,7 +19,7 @@ const SubjectSelection = () => {
       return;
     }
 
-    axios.get('http://127.0.0.1:8000/api/subjects', {
+    axios.get(`${API_BASE}/subjects`, {
       headers: {
         'Authorization': `Bearer ${token}`,
         'Accept': 'application/json'
@@ -37,7 +38,7 @@ const SubjectSelection = () => {
   const handleEnroll = (subjectId) => {
     const token = localStorage.getItem('token');
     
-    axios.post(`http://127.0.0.1:8000/api/subjects/${subjectId}/enroll`, {}, {
+    axios.post(`${API_BASE}/subjects/${subjectId}/enroll`, {}, {
       headers: {
         'Authorization': `Bearer ${token}`,
         'Accept': 'application/json'

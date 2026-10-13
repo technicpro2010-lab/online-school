@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
-const API_BASE = 'http://127.0.0.1:8000/api';
+import { API_BASE, storageUrl } from '../api';
 
 function ArticlesList({ user }) {
   const [articles, setArticles] = useState([]);
@@ -75,7 +74,7 @@ function ArticlesList({ user }) {
             const fileUrl = article.file_path
               ? (article.file_path.startsWith('http')
                   ? article.file_path
-                  : `http://127.0.0.1:8000/storage/${article.file_path}`)
+                  : storageUrl(article.file_path))
               : (article.url || null);
 
             return (

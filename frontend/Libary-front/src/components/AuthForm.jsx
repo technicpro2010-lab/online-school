@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import nicsLogo from '../assets/nics_logo.jpg';
+import { API_BASE } from '../api';
 
 /* ─── Responsive styles injected once ─────────────────────────────────── */
 const CSS = `
@@ -661,8 +662,8 @@ const AuthForm = ({ onLoginSuccess }) => {
     setLoading(true);
 
     const endpoint = isLogin
-      ? 'http://127.0.0.1:8000/api/login'
-      : 'http://127.0.0.1:8000/api/register';
+      ? `${API_BASE}/login`
+      : `${API_BASE}/register`;
 
     axios
       .post(endpoint, formData, {

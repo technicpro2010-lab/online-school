@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { API_BASE } from '../api';
 
 const EditBookModal = ({ book, onClose, onBookUpdated }) => {
   const [formData, setFormData] = useState({
@@ -17,7 +18,7 @@ const EditBookModal = ({ book, onClose, onBookUpdated }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.put(`http://127.0.0.1:8000/api/books/${book.id}`, formData)
+    axios.put(`${API_BASE}/books/${book.id}`, formData)
       .then(res => {
         onBookUpdated(res.data);
         onClose();

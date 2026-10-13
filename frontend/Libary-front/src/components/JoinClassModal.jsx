@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { API_BASE } from '../api';
 
 const JoinClassModal = ({ isOpen, onClose, classData }) => {
   const [isLogging, setIsLogging] = useState(false);
@@ -12,7 +13,7 @@ const JoinClassModal = ({ isOpen, onClose, classData }) => {
     try {
       // 1. Log attendance in Laravel backend
       await axios.post(
-        'http://127.0.0.1:8000/api/attendance/log',
+        `${API_BASE}/attendance/log`,
         {
           subject_id: classData.subject_id,
           class_session_id: classData.id || null,

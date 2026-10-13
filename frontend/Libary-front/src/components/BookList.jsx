@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { API_BASE, storageUrl } from '../api';
 
 const BookList = ({ user }) => {
   const [books, setBooks] = useState([]);
@@ -15,14 +16,14 @@ const BookList = ({ user }) => {
     setDeletingId(book.id);
     const token = localStorage.getItem('token');
     try {
-      await axios.delete(`http://127.0.0.1:8000/api/books/${book.id}`, {
+      await axios.delete(`${API_BASE}/books/${book.id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       alert('Book deleted successfully.');
       fetchBooks();
     } catch (err) {
       try {
-        await axios.delete(`http://127.0.0.1:8000/api/materials/${book.id}`, {
+        await axios.delete(`${API_BASE}/materials/${book.id}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         alert('Book deleted successfully.');
@@ -41,7 +42,7 @@ const BookList = ({ user }) => {
     const token = localStorage.getItem('token');
     const headers = token ? { Authorization: `Bearer ${token}` } : {};
 
-    axios.get('http://127.0.0.1:8000/api/subjects', { headers })
+    axios.get(`${API_BASE}/subjects`, { headers })
       .then(res => setSubjects(res.data || []))
       .catch(err => console.error('Error loading subjects:', err));
   }, []);
@@ -58,8 +59,8 @@ const BookList = ({ user }) => {
 
     try {
       const url = selectedSubject
-        ? `http://127.0.0.1:8000/api/books?subject_id=${selectedSubject}`
-        : 'http://127.0.0.1:8000/api/books';
+        ? `${API_BASE}/books?subject_id=${selectedSubject}`
+        : `${API_BASE}/books`;
 
       const response = await axios.get(url, { headers });
       let bookList = response.data || [];
@@ -67,7 +68,7 @@ const BookList = ({ user }) => {
       // If empty and no subject filter, fallback to materials
       if (bookList.length === 0 && !selectedSubject) {
         try {
-          const matRes = await axios.get('http://127.0.0.1:8000/api/materials', { headers });
+          const matRes = await axios.get(`${API_BASE}/materials`, { headers });
           const matData = Array.isArray(matRes.data) ? matRes.data : [];
           bookList = matData.filter(item => item.type === 'book' || (!item.url && item.file_path));
         } catch (matErr) {
@@ -80,7 +81,7 @@ const BookList = ({ user }) => {
       console.error('Error fetching books:', error);
       // Try fallback to materials
       try {
-        const matRes = await axios.get('http://127.0.0.1:8000/api/materials', { headers });
+        const matRes = await axios.get(`${API_BASE}/materials`, { headers });
         const matData = Array.isArray(matRes.data) ? matRes.data : [];
         let filtered = matData.filter(item => item.type === 'book' || (!item.url && item.file_path));
         if (selectedSubject) {
@@ -128,7 +129,7 @@ const BookList = ({ user }) => {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '20px' }}>
           {books.map((book) => {
             const fileUrl = book.file_path
-              ? (book.file_path.startsWith('http') ? book.file_path : `http://127.0.0.1:8000/storage/${book.file_path}`)
+              ? storageUrl(book.file_path)
               : (book.url ? (book.url.startsWith('http') ? book.url : `https://${book.url}`) : null);
 
             return (
