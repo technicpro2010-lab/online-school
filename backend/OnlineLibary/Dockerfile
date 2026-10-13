@@ -1,5 +1,3 @@
-FROM composer:2 AS composer
-
 FROM php:8.4-apache
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -20,11 +18,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         pdo_pgsql \
     && rm -rf /var/lib/apt/lists/*
 
-COPY --from=composer /usr/bin/composer /usr/bin/composer
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html
 
 COPY . .
+
+ENV COMPOSER_ALLOW_SUPERUSER=1
 
 RUN composer install \
         --no-dev \
