@@ -1,5 +1,26 @@
 # DigitalOcean Deployment Guide
 
+## Render backend with Neon
+
+The Laravel backend is in `backend/OnlineLibary`. Configure the Render service to
+use that directory as its root directory and deploy it with the included Dockerfile.
+The container runs `php artisan migrate --force` before Apache starts, so new Neon
+databases receive the application schema automatically.
+
+Set these backend environment variables in Render:
+
+- `APP_ENV=production`
+- `APP_DEBUG=false`
+- `APP_KEY` (a generated Laravel application key)
+- `DB_CONNECTION=pgsql`
+- `DATABASE_URL` (the Neon connection string, including `sslmode=require`)
+
+Keep the teacher account in the Neon database. Accounts stored in a local or other
+database are not copied to Neon automatically.
+
+For the Vercel frontend, set `VITE_API_URL` to the public Render service URL
+(without `/api`), then redeploy the frontend.
+
 ## Prerequisites
 - DigitalOcean account
 - Docker installed locally

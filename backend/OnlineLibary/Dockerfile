@@ -44,6 +44,8 @@ RUN sed -ri "s!/var/www/html!${APACHE_DOCUMENT_ROOT}!g" /etc/apache2/sites-avail
     && a2enconf laravel \
     && a2enmod rewrite
 
+CMD ["sh", "-c", "php artisan migrate --force && exec apache2-foreground"]
+
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 
 EXPOSE 10000
