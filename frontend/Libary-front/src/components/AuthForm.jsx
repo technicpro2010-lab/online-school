@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import nicsLogo from '../assets/nics_logo.jpg';
 import { API_BASE } from '../api';
@@ -11,22 +11,22 @@ const CSS = `
 
   .nics-root {
     font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-    background: #f0f4ff;
+    background: #f5f7ff;
     color: #0f172a;
-    min-height: 100vh;
+    min-height: 100svh;
   }
 
   /* ── Header ─────────────────────────────────── */
   .nics-header {
     background: linear-gradient(135deg, #0a1628 0%, #1e3a8a 100%);
     color: #fff;
-    padding: 14px 32px;
+    padding: 12px clamp(18px, 4vw, 48px);
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
     gap: 12px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    box-shadow: 0 8px 28px rgba(4,12,36,0.24);
     position: sticky;
     top: 0;
     z-index: 100;
@@ -39,12 +39,13 @@ const CSS = `
   }
 
   .nics-logo-img {
-    width: 56px;
-    height: 56px;
-    border-radius: 12px;
+    width: 76px;
+    height: 76px;
+    border-radius: 16px;
     object-fit: cover;
-    border: 2px solid rgba(255,255,255,0.25);
-    box-shadow: 0 0 0 3px rgba(59,130,246,0.4);
+    border: 2px solid #dbeafe;
+    background: #fff;
+    box-shadow: 0 4px 14px rgba(15,23,42,0.2);
   }
 
   .nics-brand-text h1 {
@@ -102,8 +103,14 @@ const CSS = `
 
   /* ── Hero ────────────────────────────────────── */
   .nics-hero {
-    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 60%, #1d4ed8 100%);
-    padding: 70px 24px;
+    background:
+      radial-gradient(ellipse at 18% 12%, rgba(14,165,233,0.28), transparent 34%),
+      radial-gradient(ellipse at 82% 86%, rgba(139,92,246,0.28), transparent 38%),
+      linear-gradient(135deg, #071329 0%, #142c68 55%, #263b91 100%);
+    min-height: calc(100svh - 100px);
+    display: flex;
+    align-items: center;
+    padding: clamp(24px, 4vh, 48px) 24px;
     position: relative;
     overflow: hidden;
   }
@@ -116,11 +123,12 @@ const CSS = `
   }
 
   .nics-hero-inner {
-    max-width: 1200px;
+    width: 100%;
+    max-width: 1120px;
     margin: 0 auto;
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 48px;
+    grid-template-columns: minmax(0, 1.1fr) minmax(340px, 0.9fr);
+    gap: clamp(28px, 5vw, 68px);
     align-items: center;
     position: relative;
     z-index: 1;
@@ -228,10 +236,11 @@ const CSS = `
 
   /* ── Auth Card ───────────────────────────────── */
   .nics-auth-card {
-    background: #fff;
-    border-radius: 16px;
-    padding: 36px;
-    box-shadow: 0 25px 60px -10px rgba(0,0,0,0.35), 0 0 0 1px rgba(255,255,255,0.1);
+    background: linear-gradient(145deg, #fff 0%, #f4f7ff 100%);
+    border: 1px solid rgba(191,219,254,0.8);
+    border-radius: 22px;
+    padding: 28px;
+    box-shadow: 0 28px 70px -24px rgba(2,8,30,0.72), 0 0 0 1px rgba(255,255,255,0.24);
   }
 
   .nics-auth-card h3 {
@@ -246,10 +255,18 @@ const CSS = `
     text-align: center;
     font-size: 13px;
     color: #64748b;
-    margin: 0 0 24px 0;
+    margin: 0 0 16px 0;
   }
 
-  .nics-field { margin-bottom: 16px; }
+  .nics-auth-card form {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 14px;
+  }
+
+  .nics-auth-card form > .btn-submit { grid-column: 1 / -1; }
+
+  .nics-field { margin-bottom: 12px; }
 
   .nics-field label {
     display: block;
@@ -294,7 +311,7 @@ const CSS = `
     font-weight: 700;
     font-size: 15px;
     cursor: pointer;
-    margin-top: 8px;
+    margin-top: 2px;
     letter-spacing: 0.02em;
     transition: transform 0.15s, box-shadow 0.15s;
     box-shadow: 0 4px 14px rgba(37,99,235,0.35);
@@ -307,7 +324,7 @@ const CSS = `
 
   .nics-switch {
     text-align: center;
-    margin-top: 20px;
+    margin-top: 14px;
     font-size: 14px;
     color: #64748b;
   }
@@ -620,6 +637,7 @@ const CSS = `
 
   @media (max-width: 640px) {
     .nics-header { padding: 12px 16px; }
+    .nics-logo-img { width: 62px; height: 62px; border-radius: 15px; }
     .nics-nav { gap: 12px; }
     .nics-nav a { display: none; }
     .nics-brand-text h1 { font-size: 17px; }
@@ -629,6 +647,28 @@ const CSS = `
     .nics-auth-card { padding: 24px 18px; }
     .nics-section { padding: 48px 16px; }
     .section-header h2 { font-size: 24px; }
+  }
+
+  @media (min-width: 701px) and (max-width: 900px) {
+    .nics-hero-inner {
+      grid-template-columns: minmax(0, 1fr) minmax(330px, 0.9fr);
+      gap: 24px;
+    }
+    .nics-hero-left h2 { font-size: 30px; }
+    .nics-mini-cards { grid-template-columns: 1fr 1fr; }
+  }
+
+  @media (min-width: 701px) {
+    .nics-mini-cards,
+    .nics-wa-strip { display: none; }
+  }
+
+  @media (max-width: 700px) {
+    .nics-hero { min-height: auto; }
+    .nics-hero-left { display: none; }
+    .nics-hero-inner { max-width: 480px; }
+    .nics-auth-card form { grid-template-columns: 1fr; }
+    .nics-auth-card form > .btn-submit { grid-column: auto; }
   }
 `;
 
@@ -892,9 +932,6 @@ const AuthForm = ({ onLoginSuccess }) => {
       <section id="about" className="nics-section white">
         <div className="nics-section-inner">
           <div className="section-header">
-            <div className="nics-badge" style={{ background: '#eff6ff', border: '1px solid #bfdbfe', color: '#1d4ed8', marginBottom: '10px' }}>
-              🏫 Our Teaching Methodology
-            </div>
             <h2 style={{ color: '#0f172a' }}>How We Teach Students Professionally</h2>
             <p>
               Our methodology combines live interactive instruction, real-world software engineering
@@ -970,8 +1007,8 @@ const AuthForm = ({ onLoginSuccess }) => {
               <div className="step-number">2</div>
               <h3>Course Selection &amp; Approval</h3>
               <p>
-                Choose your Computer Science subject(s). Our department approves your enrollment,
-                sets up your student portal account, and assigns your subjects.
+                Choose your course(s). Our department approves your enrollment,
+                sets up your student portal account, and assigns your courses.
               </p>
             </div>
 
@@ -999,55 +1036,42 @@ const AuthForm = ({ onLoginSuccess }) => {
       <section id="courses" className="nics-section gray">
         <div className="nics-section-inner">
           <div className="section-header">
-            <div className="nics-badge" style={{ background: '#eff6ff', border: '1px solid #bfdbfe', color: '#1d4ed8', marginBottom: '10px' }}>
-              💻 Core Curriculum
-            </div>
-            <h2 style={{ color: '#0f172a' }}>Computer Science Course Catalog</h2>
+            <h2 style={{ color: '#0f172a' }}>Our Course Catalog</h2>
             <p>
-              NICS focuses on Computer Science subjects to equip students with real software
-              engineering skills for today's digital world.
+              Explore practical courses in trading, web development, and programming. Choose a
+              learning path that matches your interests and goals.
             </p>
           </div>
 
           <div className="courses-grid">
             <div className="course-card">
-              <span className="course-tag">CS-101</span>
-              <h3>Fundamentals of Programming</h3>
+              <span className="course-tag">MARKETS</span>
+              <h3>Trading: Forex &amp; Crypto</h3>
               <p>
-                Master core programming concepts — variables, control structures, functions,
-                pseudo-code, and algorithm design to build a strong foundation.
+                Learn the foundations of forex and cryptocurrency markets, chart reading, and
+                responsible risk management.
               </p>
-              <div className="course-topics">🔑 Logic Gates · Control Flow · Python / C++</div>
+              <div className="course-topics">Market basics · Technical analysis · Risk management</div>
             </div>
 
             <div className="course-card">
-              <span className="course-tag">CS-201</span>
-              <h3>Relational Database Systems</h3>
+              <span className="course-tag">BUILD</span>
+              <h3>Web Development</h3>
               <p>
-                Learn relational database design, Primary &amp; Foreign keys, SQL queries,
-                normalization forms, and professional MySQL data storage.
+                Create responsive websites and web applications, from page design through
+                interactive features and backend fundamentals.
               </p>
-              <div className="course-topics">🔑 MySQL · Normalization · SQL Queries</div>
+              <div className="course-topics">HTML &amp; CSS · JavaScript · Frontend &amp; backend</div>
             </div>
 
             <div className="course-card">
-              <span className="course-tag">CS-301</span>
-              <h3>Web Application Development</h3>
+              <span className="course-tag">CODE</span>
+              <h3>Programming Languages</h3>
               <p>
-                Build full-stack web applications using modern React UI components and Laravel
-                RESTful backend APIs with industry-standard patterns.
+                Build programming skills by learning core concepts and writing projects in
+                popular languages.
               </p>
-              <div className="course-topics">🔑 React · Laravel · REST API · JavaScript</div>
-            </div>
-
-            <div className="course-card">
-              <span className="course-tag">CS-401</span>
-              <h3>Computer Science Theory</h3>
-              <p>
-                Understand computing theory, hardware architecture, Boolean algebra, computer
-                networks, operating systems, and university exam preparation.
-              </p>
-              <div className="course-topics">🔑 Boolean Algebra · Hardware · Networks</div>
+              <div className="course-topics">Python · Java · C++ · JavaScript</div>
             </div>
           </div>
         </div>
