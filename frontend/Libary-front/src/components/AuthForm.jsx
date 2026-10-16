@@ -932,20 +932,20 @@ const AuthForm = ({ onLoginSuccess }) => {
       <section id="about" className="nics-section white">
         <div className="nics-section-inner">
           <div className="section-header">
-            <h2 style={{ color: '#0f172a' }}>How We Teach Students Professionally</h2>
+            <h2 style={{ color: '#0f172a' }}>Flexible Online &amp; Offline Learning</h2>
             <p>
-              Our methodology combines live interactive instruction, real-world software engineering
-              practices, and structured learning paths tailored to each student's level.
+              Learn with us online or in person. Every student can also access the learning portal
+              for course books, articles, and daily lesson videos.
             </p>
           </div>
 
           <div className="feature-grid">
             <div className="feature-card">
               <div className="feature-icon" style={{ background: '#dbeafe' }}>🎥</div>
-              <h3>1. Scheduled Live Classes</h3>
+              <h3>1. Online &amp; Offline Classes</h3>
               <p>
-                Teachers schedule live video lectures on Google Meet. Students join directly from
-                their dashboard with automated attendance logging and real-time Q&amp;A.
+                Join live online classes or learn in person. Online lessons use Google Meet and
+                include time for questions and discussion with your teacher.
               </p>
             </div>
 
@@ -960,10 +960,10 @@ const AuthForm = ({ onLoginSuccess }) => {
 
             <div className="feature-card">
               <div className="feature-icon" style={{ background: '#fef3c7' }}>📖</div>
-              <h3>3. Curated Digital Library</h3>
+              <h3>3. Student Learning Portal</h3>
               <p>
-                Enrolled students get instant access to PDF course books, video lessons, technical
-                guides, and research articles uploaded by certified instructors.
+                Sign in to download course books, read articles, and watch online videos from your
+                daily lessons—all in one place.
               </p>
             </div>
 
