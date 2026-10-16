@@ -1,19 +1,25 @@
-# DigitalOcean Deployment Guide
+# Deployment Guide
 
 ## Render backend with Neon
 
 The Laravel backend is in `backend/OnlineLibary`. Configure the Render service to
 use that directory as its root directory and deploy it with the included Dockerfile.
-The container runs `php artisan migrate --force` before Apache starts, so new Neon
-databases receive the application schema automatically.
+The container runs `php artisan migrate --force` before Apache starts, so the
+configured PostgreSQL database must be reachable from Render during startup.
 
-Set these backend environment variables in Render:
+In the Render dashboard, open the backend web service's **Environment** settings
+and set:
 
 - `APP_ENV=production`
 - `APP_DEBUG=false`
 - `APP_KEY` (a generated Laravel application key)
 - `DB_CONNECTION=pgsql`
-- `DATABASE_URL` (the Neon connection string, including `sslmode=require`)
+- `DATABASE_URL` (the PostgreSQL connection string)
+
+Use the database's internal connection URL when the database is hosted on Render.
+For Neon, use its connection string with `sslmode=require`. Do not set `DB_HOST` to
+`127.0.0.1` or `localhost`: that points back to the web-service container, not to
+the database. Save the variables and redeploy the backend.
 
 Keep the teacher account in the Neon database. Accounts stored in a local or other
 database are not copied to Neon automatically.
