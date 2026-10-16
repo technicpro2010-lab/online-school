@@ -43,3 +43,9 @@ RUN sed -ri "s!/var/www/html!${APACHE_DOCUMENT_ROOT}!g" /etc/apache2/sites-avail
         > /etc/apache2/conf-available/laravel.conf \
     && a2enconf laravel \
     && a2enmod rewrite
+
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+
+EXPOSE 10000
+
+CMD ["sh", "/usr/local/bin/docker-entrypoint.sh"]
