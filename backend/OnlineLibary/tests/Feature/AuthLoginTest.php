@@ -20,3 +20,16 @@ test('teacher can log in and receive a sanctum token', function () {
         ->assertJsonPath('token_type', 'Bearer')
         ->assertJsonStructure(['access_token']);
 });
+
+test('login rejects an incorrect password', function () {
+    $user = User::factory()->create([
+        'password' => Hash::make('correct-password'),
+    ]);
+
+    $this->postJson('/api/login', [
+        'email' => $user->email,
+        'password' => 'incorrect-password',
+    ])
+        ->assertUnauthorized()
+        ->assertJsonPath('message', 'Invalid credentials');
+});
